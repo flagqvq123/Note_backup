@@ -65,3 +65,30 @@
 - 28：全局指针
 - 29：栈指针
 - 30：
+
+##### MIPS Arithmetic Instructions
+- add, sub
+- 每个算数指令进行一个操作，需要三个操作数
+- `add $t0, $s1, $s2`
+	- 两个源操作数，结果存在目标寄存器。
+- 对应的指令编码：R型
+	- `op: instruction, 
+	- `rs: $s1, 
+	- `rt: $s2, 
+	- `td: $t0, 
+	- `ams: 全0
+	- `funct: instruction
+
+##### MIPS Memory Access Instruction
+- lw, sw
+- `lw   $t0, 4($s3)   # load word from memory`
+- `sw   $t0, 8($s3)   # store word to memory`
+	- 读写
+- 内存的表示：基地址+偏移量。基地址32位存在一个寄存器里。
+	- 例如`4($s3)`就是{s3}+4的意思
+- 对应的指令编码，I型
+	- `op: instruction`
+	- `rs: $s3`
+	- `rt: $t0`
+	- `immediate: 数字`
+- 
