@@ -116,3 +116,20 @@
 
 ##### \*Earliest Deadline First Scheduling(EDF)
 - 将截止时间最早的任务优先
+
+##### Linux Scheduling in Version 2.6.23
+- CFS Completely Fair Scheduler 公平调度算法
+	- 根据进程等待时间确定`nice value (-20 - 19)`
+- `weight = 1024 * 1.25^(-nice)`
+- `virtual run time`虚拟运行时间
+	- `virtual run time += 实际运行时间 * 1024 / weight`
+- 最后依靠virtual run time构建红黑树
+	- 系统永远调度`virtual run time`最小的进程/线程
+	- 高权重的任务，virtual run time会增长得更快，执行一段时间后就不是最优先任务了
+	- 保证低优先级任务的执行
+- O(1) 找下一个进程，O(logn) 增删子节点
+
+##### \*Windows Scheduling
+- 与linux相反，Windows将大数作为高优先级
+- 优先级在`1-31`之间
+
