@@ -143,3 +143,34 @@ Q：Li的可能最大值和最小值？
 A：最大正无穷，最小0
 Q：当我们随机从一个W开始时，所有分数都是相等的，那么此时的L是多少？
 A：-log(1/c)
+
+---
+### Softmax function
+- soft max 顾名思义，可以分为两个部分：soft和max
+	- max的含义：该函数将输出“最大值”
+	- soft的含义：相比于普通的hardmax，即max()，仅仅输出数组最大值。softmax通过指数变换和归一化，将输出变成一个类似概率的形式。
+- softmax函数：$$Softmax(z_i)=\frac{e^{z_i}}{\sum_{j=1}^n e^{z_j}}$$
+	- 解析：先对目标分数(score)求其指数函数，再除以所有求得的指数分数总和进行归一化，得到一个新的分数。此时，所有分类的分数总和为1，且由于指数函数的引入，线性的关系被拉得更大。（大的更接近1，小的更接近0）
+- 引入指数的优点：指数形式求导很方便。缺点：数值会溢出（解决方法：每个值都减去最大值即可）
+```python
+import numpy as np
+
+scores = np.array([123, 456, 789])
+scores -= np.max(scores)
+p = np.exp(scores) / np.sum(np.exp(scores))
+print(p) # [5.75274406e-290 2.39848787e-145 1.00000000e+000]
+```
+
+### Loss function
+- 定义一个lossfunc的方式
+	- 1.分类误差率
+		- 公式：$classification\ error = \frac{count\ of\ error\ items}{count\ of\ all\ items}$
+		- 问题：两个模型如果分数差距一个大一个小，但是结果是一样的，它们的loss也是一样的，就区分不出来了。
+	- 2.均方误差
+		- 公式：$MSE = \frac{1}{n} \sum_{i=1}^{n}(\hat{y_i}-y_i)$
+		- 问题：在分类问题中，使用sigmoid/softmax得到概率，配合MSE损失函数时，采用梯度下降法进行学习时，会出现模型一开始训练时，学习速率非常慢的情况
+
+- Cross-Entropy Loss 交叉熵
+	- 表达式：
+		- 二分类：$$L=\frac{1}{N}\sum_iL_i=-\frac{1}{N}\sum_i[y_i·log(p_i)+(1-y_i)·log(1-p_i)]$$
+		- 多分类：$$L=\frac{1}{N}\sum_iL_i=-\frac{1}{N}\sum_i\sum_{c=1}^My_{ic}·log(p_{ic})$$

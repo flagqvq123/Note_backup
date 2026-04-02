@@ -88,3 +88,25 @@ printk(KERN_INFO"Message:%s\n", arg)
 
 - 创建一个补丁(patch)
 	- 面向系统安全、漏洞来开发的小代码，是为了替换现有的有问题的部分代码。
+
+
+# Linux内核的线程、进程管理
+- 模块
+	- Timer、Interrupts
+	- Protection、Mechanisms
+- Virtual CPU与地址空间管理
+
+##### task_struct
+- 结构非常复杂
+- 进程的描述结构体
+
+##### 进程描述
+- 进程指针一共32位
+	- 16位保存PID（process ID）
+		- 在linux中，既包含了进程，也包含了LWP（thread，线程）
+		- linux2.4后，使用线程组(Thread group)管理线程
+			- PID分给线程组的第一个线程
+			- thread_union{}结构
+
+##### 进程队列与线程队列
+- 使用双向链表管理
